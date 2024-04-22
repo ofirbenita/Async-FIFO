@@ -29,22 +29,22 @@ plus <= "1" when ( ren = not rempty_sync )
 else "0" ;
 rempty <=rempty_sync;
 raddr<= r_bin ( 3 downto 0 );
-r_binext <= std_logic_vector( unsigned(r_bin)+1);
+r_binext <= std_logic_vector( unsigned(r_bin)+plus);
 r_gnext <= r_binext xor ( '0' & r_binext(4 downto 1) );
-rempty_value <= '1' when rq2_wptr = r_bin 
+rempty_value <= '1' when rq2_wptr = r_gnext
 else '0' ;
 process ( rclk , rrst )
 begin 
   if rrst ='1' then 
-  r_bin <= (others => '0' );
-  rptr <= (others => '0' );
-  end if;
-  if rising_edge (rclk) then 
+   r_bin <= (others => '0' );
+    rptr <= (others => '0' );
+    rempty_sync<='0';
+  elsif rising_edge (rclk) then 
     if ren ='1' then 
-  r_bin <= r_binext ;
-  rptr<=r_gnext;
-  rempty_sync <= rempty_value;
-    end if;
+       r_bin <= r_binext ;
+       rptr<=r_gnext;
+       rempty_sync <= rempty_value;
+  end if;
  end if;
 end process;  
 end Behavioral;

@@ -18,7 +18,7 @@ port (
 end W_PTR;
 
 architecture Behavioral of W_PTR is
-signal w_bin,w_binext,w_gnext : std_logic_vector(4 downto 0);
+signal w_bin,w_binext,w_gnext : std_logic_vector(4 downto 0)  ;
 signal wfull_sync,wfull_value : std_logic;
 signal plus : unsigned(0 downto 0 ) ;
 begin
@@ -35,15 +35,15 @@ else '0';
 process ( wclk , wrst )
 begin 
   if wrst ='1' then 
-   w_bin<= (others => '0');
-   wptr <= (others => '0');
+   w_bin<= "00000";
+   wptr <= "00000";
    wfull_sync <= '0';
-   end if;
-   if rising_edge (wclk) then 
-     if wrst = '0' and wfull_sync ='0' then
-   w_bin <= w_binext;
-   wptr<=w_gnext;
-   wfull_sync<=wfull_value ;
+   
+   elsif rising_edge (wclk) then 
+     if wen ='1' then
+      w_bin <= w_binext;
+      wptr<=w_gnext;
+      wfull_sync<=wfull_value ;
     end if;
   end if;
  end process; 
